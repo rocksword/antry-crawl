@@ -19,9 +19,10 @@ public class WebPageReader {
     private static final Log logger = LogFactory.getLog(WebPageReader.class);
     private static final String DEFAULT_CHARSET = "UTF-8";
 
-    public String readPageByJavaApi(URL pageUrl) {
+    public static String readPageByJavaApi(String urlStr) {
         StringBuffer result = new StringBuffer();
         try {
+            URL pageUrl = new URL(urlStr);
             HttpURLConnection conn = (HttpURLConnection) pageUrl.openConnection();
             String contentType = conn.getContentType();
             logger.info("contentType: " + contentType);
@@ -40,9 +41,10 @@ public class WebPageReader {
         return result.toString();
     }
 
-    public String readPageByWebClient(URL pageUrl) {
+    public static String readPageByWebClient(String urlStr) {
         String result = null;
         try {
+            URL pageUrl = new URL(urlStr);
             WebClient webClient = new WebClient(BrowserVersion.getDefault());
             HtmlPage page = (HtmlPage) webClient.getPage(pageUrl);
             result = page.asXml();
@@ -52,7 +54,7 @@ public class WebPageReader {
         return result;
     }
 
-    private String getCharset(String str) {
+    private static String getCharset(String str) {
         if (StringUtils.isEmpty(str)) {
             return DEFAULT_CHARSET;
         }
